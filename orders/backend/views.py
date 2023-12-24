@@ -10,3 +10,4 @@ from .serializers import ShopSerializer
 class ShopsApiView(generics.ListAPIView):
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
+
