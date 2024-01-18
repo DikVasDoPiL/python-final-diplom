@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Shop
+from .models import Shop, Contact, User
 
 
 class ShopSerializer(serializers.ModelSerializer):
@@ -7,3 +7,24 @@ class ShopSerializer(serializers.ModelSerializer):
         model = Shop
         fields = ('id', 'name', 'url', 'state')
         read_only_fields = ('id',)
+
+
+class ContactSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Contact
+        fields = ('id', 'country', 'region', 'city', 'street', 'house', 'structure', 'building', 'apartment', 'user',
+                'phone', 'postal_code')
+        read_only_fields = ('id',)
+        extra_kwargs = {
+            'user': {'write_only': True}
+        }
+
+
+class UserSerializer(serializers.ModelSerializer):
+    contacts = ContactSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'first_name', 'last_name', 'email', 'company', 'position', 'contacts')
+        read_only_fields = ('id', )

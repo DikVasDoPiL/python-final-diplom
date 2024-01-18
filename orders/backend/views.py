@@ -1,14 +1,18 @@
+from django.contrib.auth import authenticate
+from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.db.models import Q
 from requests import get
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
 
-from .models import Shop, Category, ProductInfo, Product, Parameter, ProductParameter
-from .serializers import ShopSerializer
+from .models import Shop, Category, ProductInfo, Product, Parameter, ProductParameter, ConfirmEmailToken
+from .serializers import ShopSerializer, UserSerializer
+from backend.tasks import send_email
 import yaml
 
 
@@ -86,3 +90,78 @@ class PartnerUpdate(APIView):
 class ShopsApiView(generics.ListAPIView):
     queryset = Shop.objects.filter(state=True)
     serializer_class = ShopSerializer
+
+
+class RegisterUser(APIView):
+    """
+    Для регистрации покупателей
+    """
+
+    def post(self, request, *args, **kwargs):
+        if {'first_name', 'last_name', 'email', 'password', 'company', 'position'}.issubset(self.request.data):
+            try:
+                validate_password(request.data['password'])
+            except Exception as password_error:
+                error_array = []
+                for item in password_error:
+                    error_array.append(item)
+                return JsonResponse({
+                    'Status': False,
+                    'Errors': {
+                        'password': error_array}
+                    },
+                    status=status.HTTP_403_FORBIDDEN)
+            else:
+                user_serializer = UserSerializer(data=request.data)
+                if user_serializer.is_valid():
+                    user = user_serializer.save()
+                    user.set_password(request.data['password'])
+                    user.save()
+                    token, _ = ConfirmEmailToken.objects.get_or_create(user_id=user.id)
+                    send_email.delay('Confirmation of registration', f'Your confirmation token {token.key}',
+                                     user.email)
+                    return JsonResponse({'Status': True, 'Token for email confirmation': token.key},
+                                        status=status.HTTP_201_CREATED)
+                else:
+                    return JsonResponse({'Status': False,
+                                         'Errors': user_serializer.errors},
+                                        status=status.HTTP_403_FORBIDDEN)
+
+        return JsonResponse({'Status': False,
+                             'Errors': 'All necessary arguments are not specified'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+
+class LoginUser(APIView):
+    """
+    Класс для авторизации пользователей
+    """
+
+    def post(self, request, *args, **kwargs):
+
+        if {'email', 'password'}.issubset(request.data):
+            user = authenticate(request,
+                                username=request.data['email'],
+                                password=request.data['password']
+                                )
+
+            if user is not None:
+                if user.is_active:
+                    token, _ = Token.objects.get_or_create(user=user)
+
+                    return JsonResponse({
+                        'Status': True,
+                        # 'Token': token.key
+                        })
+
+            return JsonResponse({
+                'Status': False,
+                'Errors': 'Failed to authorize'
+                },
+                status=status.HTTP_403_FORBIDDEN)
+
+        return JsonResponse({
+            'Status': False,
+            'Errors': 'All necessary arguments are not specified'
+            },
+            status=status.HTTP_400_BAD_REQUEST)
