@@ -5,4 +5,5 @@ from .models import Shop
 class ShopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Shop
-        fields = ('name', 'url')
+        fields = ('id', 'name', 'url', 'state')
+        read_only_fields = ('id',)

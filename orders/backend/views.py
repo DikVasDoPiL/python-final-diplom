@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.db.models import Q
 from requests import get
 from rest_framework import generics
 from rest_framework.views import APIView
@@ -83,5 +84,5 @@ class PartnerUpdate(APIView):
 
 
 class ShopsApiView(generics.ListAPIView):
-    queryset = Shop.objects.all()
+    queryset = Shop.objects.filter(state=True)
     serializer_class = ShopSerializer
