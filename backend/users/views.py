@@ -14,9 +14,13 @@ from django.http import JsonResponse
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from rest_framework.authtoken.models import Token
 
+from django.contrib.auth import login
+from social_django.utils import psa
+
 from .models import Contact
 from server.utils import send_email
 from .serializers import AccountSerializer, AccountPublicSerializer, ContactSerializer
+
 
 User = get_user_model()
 
@@ -298,3 +302,16 @@ class AccountContact(APIView):
             'Error': 'All necessary arguments are not specified'},
             status=status.HTTP_400_BAD_REQUEST)
 
+
+@psa('social:complete')
+def register_by_access_token(request, backend):
+    # This view expects an access_token GET parameter, if it's needed,
+    # request.backend and request.strategy will be loaded with the current
+    # backend and strategy.
+    token = request.GET.get('access_token')
+    user = request.backend.do_auth(token)
+    if user:
+        login(request, user)
+        return 'OK'
+    else:
+        return 'ERROR'
