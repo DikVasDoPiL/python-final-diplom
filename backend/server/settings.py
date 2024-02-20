@@ -43,6 +43,7 @@ PROJECT_APPS = [
     'users.apps.UsersConfig',
     'orders.apps.OrdersConfig',
     'shops.apps.ShopConfig',
+    'django_coverage'
 ]
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
@@ -130,6 +131,8 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Project settings
+COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join('/', 'cover')
+
 
 AUTH_USER_MODEL = 'users.Account'
 PASSWORD_RESET_TIMEOUT = 60 * 60
@@ -143,5 +146,6 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.BasicAuthentication',
         # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }

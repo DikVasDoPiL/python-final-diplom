@@ -100,10 +100,15 @@ class EmailConfirm(APIView):
         return self._confirm(uidb64, token)
 
     def post(self, request, uid=None, token=None):
-        uid = request.data['uid']
-        token = request.data['token']
-
-        return self._confirm(uid, token)
+        try:
+            uid = request.data['uid']
+            token = request.data['token']
+            return self._confirm(uid, token)
+        except(KeyError):
+            return JsonResponse({
+                'Status': False,
+                'Errors': f'Bad request'},
+                status=status.HTTP_400_BAD_REQUEST)
 
 
 class AccountLogin(APIView):
