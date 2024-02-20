@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from rest_framework.generics import get_object_or_404
+from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.request import Request
@@ -21,6 +22,7 @@ User = get_user_model()
 
 
 class RegisterAccount(APIView):
+
     def post(self, request):
         required = {'email', 'password'}
         if required.issubset(self.request.data):
