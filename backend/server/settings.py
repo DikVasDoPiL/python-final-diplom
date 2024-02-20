@@ -43,7 +43,8 @@ PROJECT_APPS = [
     'users.apps.UsersConfig',
     'orders.apps.OrdersConfig',
     'shops.apps.ShopConfig',
-    'django_coverage'
+    'django_coverage',
+    'drf_spectacular',
 ]
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS
 
@@ -147,5 +148,14 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
-    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
 }

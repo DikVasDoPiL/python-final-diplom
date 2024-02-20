@@ -1,7 +1,9 @@
 
 from django.db import IntegrityError
 from django.http import JsonResponse
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, generics, status
+from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -77,6 +79,10 @@ class ProductInfoView(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+@extend_schema(
+        request=ShopSerializer,
+        responses=None
+    )
 class ShopState(APIView):
     permission_classes = [IsAuthenticated, IsShop]
     required = {'name', }
@@ -107,6 +113,10 @@ class ShopState(APIView):
             status=status.HTTP_200_OK)
 
 
+@extend_schema(
+        request=ShopSerializer,
+        responses=None
+    )
 class ShopUpdate(APIView):
     permission_classes = [IsAuthenticated, IsShop, IsOwner]
 
@@ -143,6 +153,7 @@ class ShopUpdate(APIView):
             'Status': True,
             'Details': f'DELETED shop {user_id}'},
             status=status.HTTP_200_OK)
+
 
 
 class PartnerUpdate(APIView):

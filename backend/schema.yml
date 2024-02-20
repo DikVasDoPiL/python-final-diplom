@@ -1,0 +1,635 @@
+openapi: 3.0.3
+info:
+  title: Your Project API
+  version: 1.0.0
+  description: Your project description
+paths:
+  /api/v1/basket:
+    get:
+      operationId: basket_retrieve
+      tags:
+      - basket
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: basket_create
+      tags:
+      - basket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: basket_update
+      tags:
+      - basket
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: basket_destroy
+      tags:
+      - basket
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/categories:
+    get:
+      operationId: categories_list
+      tags:
+      - categories
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Categories'
+          description: ''
+  /api/v1/order:
+    get:
+      operationId: order_retrieve
+      tags:
+      - order
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: order_create
+      tags:
+      - order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Order'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Order'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/partner/orders:
+    get:
+      operationId: partner_orders_retrieve
+      tags:
+      - partner
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/partner/update:
+    post:
+      operationId: partner_update_create
+      tags:
+      - partner
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/products:
+    get:
+      operationId: products_list
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductInfo'
+          description: ''
+  /api/v1/shop/state:
+    get:
+      operationId: shop_state_retrieve
+      tags:
+      - shop
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: shop_state_create
+      tags:
+      - shop
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shop'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Shop'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Shop'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/shop/update:
+    put:
+      operationId: shop_update_update
+      tags:
+      - shop
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shop'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Shop'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Shop'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: shop_update_destroy
+      tags:
+      - shop
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/shops:
+    get:
+      operationId: shops_list
+      tags:
+      - shops
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shop'
+          description: ''
+  /api/v1/user/confirm:
+    get:
+      operationId: user_confirm_retrieve
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: user_confirm_create
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/user/confirm/{uidb64}/{token}/:
+    get:
+      operationId: user_confirm_retrieve_2
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uidb64
+        schema:
+          type: string
+        required: true
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: user_confirm_create_2
+      parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: uidb64
+        schema:
+          type: string
+        required: true
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/user/contact:
+    get:
+      operationId: user_contact_retrieve
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: user_contact_create
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: user_contact_update
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: user_contact_destroy
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/user/details:
+    get:
+      operationId: user_details_retrieve
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: user_details_create
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/user/login:
+    post:
+      operationId: user_login_create
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/v1/user/password_reset:
+    post:
+      operationId: user_password_reset_create
+      description: |-
+        An Api View which provides a method to request a password reset token based on an e-mail address
+
+        Sends a signal reset_password_token_created when a reset token was created
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Email'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Email'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Email'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Email'
+          description: ''
+  /api/v1/user/password_reset/confirm:
+    post:
+      operationId: user_password_reset_confirm_create
+      description: An Api View which provides a method to reset a password based on
+        a unique token
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordToken'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordToken'
+          description: ''
+  /api/v1/user/register:
+    post:
+      operationId: user_register_create
+      tags:
+      - user
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    Categories:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Название
+          maxLength: 40
+      required:
+      - id
+      - name
+    Contact:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        city:
+          type: string
+          title: Город
+          maxLength: 50
+        street:
+          type: string
+          title: Улица
+          maxLength: 100
+        house:
+          type: string
+          title: Дом
+          maxLength: 15
+        structure:
+          type: string
+          title: Корпус
+          maxLength: 15
+        building:
+          type: string
+          title: Строение
+          maxLength: 15
+        apartment:
+          type: string
+          title: Квартира
+          maxLength: 15
+        phone:
+          type: string
+          title: Телефон
+          maxLength: 20
+        user:
+          type: integer
+          writeOnly: true
+          title: Пользователь
+      required:
+      - city
+      - id
+      - phone
+      - street
+    Email:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+      - email
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        ordered_items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItemCreate'
+          readOnly: true
+        total_sum:
+          type: integer
+        contact:
+          allOf:
+          - $ref: '#/components/schemas/Contact'
+          readOnly: true
+        datetime:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          title: Статус
+        user:
+          type: integer
+          title: Пользователь
+      required:
+      - contact
+      - datetime
+      - id
+      - ordered_items
+      - status
+      - total_sum
+    OrderItemCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product_info:
+          allOf:
+          - $ref: '#/components/schemas/ProductInfo'
+          readOnly: true
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          title: Количество
+        order:
+          type: integer
+          writeOnly: true
+          title: Заказ
+        product:
+          type: integer
+          title: Продукт
+        shop:
+          type: integer
+          title: Магазин
+      required:
+      - id
+      - product_info
+      - quantity
+    PasswordToken:
+      type: object
+      properties:
+        password:
+          type: string
+          title: Пароль
+        token:
+          type: string
+      required:
+      - password
+      - token
+    ProductInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Название
+          maxLength: 80
+      required:
+      - id
+      - name
+    Shop:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Название
+          maxLength: 50
+        url:
+          type: string
+          format: uri
+          nullable: true
+          title: Ссылка
+          maxLength: 200
+        status:
+          type: boolean
+          title: Статус получения заказов
+        user:
+          type: integer
+      required:
+      - id
+      - name
+      - user
+    StatusEnum:
+      enum:
+      - basket
+      - new
+      - confirmed
+      - assembled
+      - sent
+      - delivered
+      - canceled
+      type: string
+      description: |-
+        * `basket` - Статус корзины
+        * `new` - Новый
+        * `confirmed` - Подтвержден
+        * `assembled` - Собран
+        * `sent` - Отправлен
+        * `delivered` - Доставлен
+        * `canceled` - Отменен
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

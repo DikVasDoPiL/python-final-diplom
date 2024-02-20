@@ -1,6 +1,7 @@
 import json
 
 from django.db import IntegrityError
+from drf_spectacular.utils import extend_schema
 from ujson import loads as load_json
 from django.db.models import Sum, F, Q
 from django.http import JsonResponse
@@ -16,9 +17,13 @@ from .serializers import OrderSerializer, OrderItemSerializer
 
 # Create your views here.
 
-
+@extend_schema(
+        request=OrderSerializer,
+        responses=None
+    )
 class BasketView(APIView):
     permission_classes = [IsAuthenticated]
+
 
     @staticmethod
     def get(request):
@@ -138,6 +143,10 @@ class BasketView(APIView):
             status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+        request=OrderSerializer,
+        responses=None
+    )
 class OrderView(APIView):
     permission_classes = [IsAuthenticated]
 
